@@ -58,7 +58,7 @@ Bootstrap 3, Maintained by Phibonacci Creativo is based on Bootstrap 3.4. For us
 
 We welcome contributions! Please:
 
-1. Fork the repository and create your branch from `bootstrap-phibonacci`.
+1. Fork the repository and create your branch from `phibonacci`.
 2. Ensure your code follows the existing style and passes all tests.
 3. Submit a pull request with a clear description of your changes.
 
