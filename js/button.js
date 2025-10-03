@@ -1,11 +1,19 @@
 /* ========================================================================
- * Bootstrap: button.js v3.4.1
+ * Bootstrap: button.js v3.4.2
  * https://getbootstrap.com/docs/3.4/javascript/#buttons
  * ========================================================================
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
+function sanitizeInput(input) {
+  'use strict';
+
+  if (!input) return input
+  var tempDiv = document.createElement('div')
+  tempDiv.textContent = input
+  return tempDiv.innerHTML
+}
 
 +function ($) {
   'use strict';
@@ -19,7 +27,7 @@
     this.isLoading = false
   }
 
-  Button.VERSION  = '3.4.1'
+  Button.VERSION  = '3.4.2'
 
   Button.DEFAULTS = {
     loadingText: 'loading...'
@@ -37,7 +45,7 @@
 
     // push to event loop to allow forms to submit
     setTimeout($.proxy(function () {
-      $el[val](data[state] == null ? this.options[state] : data[state])
+      $el[val](data[state] == null ? this.options[state] : sanitizeInput(data[state]))
 
       if (state == 'loadingText') {
         this.isLoading = true

@@ -1,6 +1,6 @@
 /*!
  * Bootstrap v3.4.1 (https://getbootstrap.com/)
- * Copyright 2011-2019 Twitter, Inc.
+ * Copyright 2011-2025 Twitter, Inc.
  * Licensed under the MIT license
  */
 
@@ -173,13 +173,21 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: button.js v3.4.1
+ * Bootstrap: button.js v3.4.2
  * https://getbootstrap.com/docs/3.4/javascript/#buttons
  * ========================================================================
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
+function sanitizeInput(input) {
+  'use strict';
+
+  if (!input) return input
+  var tempDiv = document.createElement('div')
+  tempDiv.textContent = input
+  return tempDiv.innerHTML
+}
 
 +function ($) {
   'use strict';
@@ -193,7 +201,7 @@ if (typeof jQuery === 'undefined') {
     this.isLoading = false
   }
 
-  Button.VERSION  = '3.4.1'
+  Button.VERSION  = '3.4.2'
 
   Button.DEFAULTS = {
     loadingText: 'loading...'
@@ -211,7 +219,7 @@ if (typeof jQuery === 'undefined') {
 
     // push to event loop to allow forms to submit
     setTimeout($.proxy(function () {
-      $el[val](data[state] == null ? this.options[state] : data[state])
+      $el[val](data[state] == null ? this.options[state] : sanitizeInput(data[state]))
 
       if (state == 'loadingText') {
         this.isLoading = true
@@ -297,7 +305,6 @@ if (typeof jQuery === 'undefined') {
     })
 
 }(jQuery);
-
 /* ========================================================================
  * Bootstrap: carousel.js v3.4.1
  * https://getbootstrap.com/docs/3.4/javascript/#carousel
@@ -1284,7 +1291,7 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 /* ========================================================================
- * Bootstrap: tooltip.js v3.4.1
+ * Bootstrap: tooltip.js v3.4.3
  * https://getbootstrap.com/docs/3.4/javascript/#tooltip
  * Inspired by the original jQuery.tipsy by Jason Frame
  * ========================================================================
@@ -1383,49 +1390,6 @@ if (typeof jQuery === 'undefined') {
     return false
   }
 
-  function sanitizeHtml(unsafeHtml, whiteList, sanitizeFn) {
-    if (unsafeHtml.length === 0) {
-      return unsafeHtml
-    }
-
-    if (sanitizeFn && typeof sanitizeFn === 'function') {
-      return sanitizeFn(unsafeHtml)
-    }
-
-    // IE 8 and below don't support createHTMLDocument
-    if (!document.implementation || !document.implementation.createHTMLDocument) {
-      return unsafeHtml
-    }
-
-    var createdDocument = document.implementation.createHTMLDocument('sanitization')
-    createdDocument.body.innerHTML = unsafeHtml
-
-    var whitelistKeys = $.map(whiteList, function (el, i) { return i })
-    var elements = $(createdDocument.body).find('*')
-
-    for (var i = 0, len = elements.length; i < len; i++) {
-      var el = elements[i]
-      var elName = el.nodeName.toLowerCase()
-
-      if ($.inArray(elName, whitelistKeys) === -1) {
-        el.parentNode.removeChild(el)
-
-        continue
-      }
-
-      var attributeList = $.map(el.attributes, function (el) { return el })
-      var whitelistedAttributes = [].concat(whiteList['*'] || [], whiteList[elName] || [])
-
-      for (var j = 0, len2 = attributeList.length; j < len2; j++) {
-        if (!allowedAttribute(attributeList[j], whitelistedAttributes)) {
-          el.removeAttribute(attributeList[j].nodeName)
-        }
-      }
-    }
-
-    return createdDocument.body.innerHTML
-  }
-
   // TOOLTIP PUBLIC CLASS DEFINITION
   // ===============================
 
@@ -1441,7 +1405,7 @@ if (typeof jQuery === 'undefined') {
     this.init('tooltip', element, options)
   }
 
-  Tooltip.VERSION  = '3.4.1'
+  Tooltip.VERSION  = '3.4.3'
 
   Tooltip.TRANSITION_DURATION = 150
 
@@ -1497,6 +1461,82 @@ if (typeof jQuery === 'undefined') {
       this.fixTitle()
   }
 
+  Tooltip.prototype.sanitizeHtml = function (unsafeHtml, whiteList) {
+    if (!unsafeHtml) return ''
+
+    whiteList = whiteList || {
+      a: ['href', 'title', 'target', 'rel'],
+      b: [], strong: [], i: [], em: [], u: [],
+      p: [], br: [], ul: [], ol: [], li: [],
+      span: ['title'], div: ['class', 'title'],
+      img: ['src', 'alt', 'title', 'width', 'height']
+    }
+
+    var allowedProtocols = /^(https?|mailto|tel):/i
+
+    // Parse inertly using <template>, avoids execution
+    var template = document.createElement('template')
+    template.innerHTML = unsafeHtml
+    var content = template.content || template
+
+    function clean(node) {
+      switch (node.nodeType) {
+        case Node.TEXT_NODE:
+          return document.createTextNode(node.nodeValue)
+        case Node.ELEMENT_NODE:
+          var tag = node.nodeName.toLowerCase()
+          if (!whiteList[tag]) {
+            // unwrap non-whitelisted tags
+            var frag = document.createDocumentFragment()
+            for (var c = node.firstChild; c; c = c.nextSibling) {
+              var cleaned = clean(c)
+              if (cleaned) frag.appendChild(cleaned)
+            }
+            return frag
+          }
+
+          var el = document.createElement(tag)
+          var attrs = whiteList[tag]
+          for (var i = 0; i < node.attributes.length; i++) {
+            var attr = node.attributes[i]
+            var name = attr.name.toLowerCase()
+            var val = attr.value
+
+            // block inline event handlers
+            if (name.indexOf('on') === 0) continue
+
+            if (attrs.indexOf(name) !== -1) {
+              if ((name === 'href' || name === 'src')) {
+                var vtrim = val.trim()
+                if (allowedProtocols.test(vtrim) || vtrim.startsWith('/') || vtrim.startsWith('.')) {
+                  el.setAttribute(name, vtrim)
+                }
+              } else {
+                el.setAttribute(name, val)
+              }
+            }
+          }
+
+          for (var c2 = node.firstChild; c2; c2 = c2.nextSibling) {
+            var cleanedChild = clean(c2)
+            if (cleanedChild) el.appendChild(cleanedChild)
+          }
+          return el
+      }
+      return null
+    }
+
+    var frag = document.createDocumentFragment()
+    for (var child = content.firstChild; child; child = child.nextSibling) {
+      var cleaned = clean(child)
+      if (cleaned) frag.appendChild(cleaned)
+    }
+
+    var wrapper = document.createElement('div')
+    wrapper.appendChild(frag)
+    return wrapper.innerHTML
+  }
+
   Tooltip.prototype.getDefaults = function () {
     return Tooltip.DEFAULTS
   }
@@ -1520,7 +1560,7 @@ if (typeof jQuery === 'undefined') {
     }
 
     if (options.sanitize) {
-      options.template = sanitizeHtml(options.template, options.whiteList, options.sanitizeFn)
+      options.template = this.sanitizeHtml(options.template, options.whiteList)
     }
 
     return options
@@ -1738,7 +1778,7 @@ if (typeof jQuery === 'undefined') {
 
     if (this.options.html) {
       if (this.options.sanitize) {
-        title = sanitizeHtml(title, this.options.whiteList, this.options.sanitizeFn)
+        title = this.sanitizeHtml(title, this.options.whiteList)
       }
 
       $tip.find('.tooltip-inner').html(title)
@@ -1924,10 +1964,6 @@ if (typeof jQuery === 'undefined') {
       that.$viewport = null
       that.$element = null
     })
-  }
-
-  Tooltip.prototype.sanitizeHtml = function (unsafeHtml) {
-    return sanitizeHtml(unsafeHtml, this.options.whiteList, this.options.sanitizeFn)
   }
 
   // TOOLTIP PLUGIN DEFINITION
