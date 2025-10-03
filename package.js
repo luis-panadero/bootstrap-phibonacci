@@ -4,10 +4,10 @@
 /* global Package:true */
 
 Package.describe({
-  name: 'twbs:bootstrap',  // https://atmospherejs.com/twbs/bootstrap
-  summary: 'The most popular front-end framework for developing responsive, mobile first projects on the web.',
-  version: '3.4.1',
-  git: 'https://github.com/twbs/bootstrap.git'
+  name: 'phibonacci:bootstrap',  // https://atmospherejs.com/twbs/bootstrap
+  summary: 'Drop-in replacement for Bootstrap 3.4 with security patches maintained by Phibonacci Creativo.',
+  version: '3.4.2-phibonacci.0',
+  git: 'https://github.com/phibonaccicreativo/bootstrap-phibonacci.git'
 });
 
 Package.onUse(function (api) {

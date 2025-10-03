@@ -1,6 +1,6 @@
 {
-  "name": "bootstrap",
-  "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+  "name": "bootstrap-phibonacci",
+  "description": "Drop-in replacement for Bootstrap 3.4 with security patches maintained by Phibonacci Creativo.",
   "keywords": [
     "css",
     "js",
@@ -9,9 +9,12 @@
     "responsive",
     "front-end",
     "framework",
-    "web"
+    "web",
+    "bootstrap",
+    "bootstrap3",
+    "phibonacci"
   ],
-  "homepage": "https://getbootstrap.com/",
+  "homepage": "https://www.phibonacci-creativo.com/",
   "license": "MIT",
   "moduleType": "globals",
   "main": [

