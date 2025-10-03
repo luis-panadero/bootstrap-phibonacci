@@ -1,6 +1,6 @@
 {
-  "name": "twbs/bootstrap",
-  "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+  "name": "phibonacci/bootstrap",
+  "description": "Drop-in replacement for Bootstrap 3.4 with security patches maintained by Phibonacci Creativo",
   "keywords": [
     "css",
     "js",
@@ -9,9 +9,12 @@
     "responsive",
     "front-end",
     "framework",
-    "web"
+    "web",
+    "bootstrap",
+    "bootstrap3",
+    "phibonacci"
   ],
-  "homepage": "https://getbootstrap.com/",
+  "homepage": "https://www.phibonacci-creativo.com/",
   "authors": [
     {
       "name": "Mark Otto",
@@ -20,18 +23,23 @@
     {
       "name": "Jacob Thornton",
       "email": "jacobthornton@gmail.com"
+    },
+    {
+      "name": "Your Name",
+      "email": "you@example.com",
+      "role": "Maintainer (Phibonacci fork)"
     }
   ],
   "support": {
-    "issues": "https://github.com/twbs/bootstrap/issues"
+    "issues": "https://github.com/phibonaccicreativo/bootstrap-phibonacci/issues"
   },
   "license": "MIT",
   "extra": {
     "branch-alias": {
-      "dev-master": "3.4.x-dev"
+      "dev-master": "phibonacci-dev"
     }
   },
   "replace": {
-    "twitter/bootstrap": "self.version"
+    "twbs/bootstrap": "self.version"
   }
 }

@@ -1,6 +1,6 @@
 /*!
- * Bootstrap v3.4.1 (https://getbootstrap.com/)
- * Copyright 2011-2025 Twitter, Inc.
+ * Bootstrap 3, Maintained by Phibonacci Creativo v3.4.2-phibonacci.0 (https://www.phibonacci-creativo.com/)
+ * Copyright 2011-2019 Twitter, Inc. (original), maintained by Phibonacci Creativo
  * Licensed under the MIT license
  */
 

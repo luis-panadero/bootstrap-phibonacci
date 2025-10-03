@@ -1,7 +1,7 @@
 {
-  "name": "bootstrap",
-  "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-  "version": "3.4.1",
+  "name": "bootstrap-phibonacci",
+  "description": "Drop-in replacement for Bootstrap 3.4 with security patches maintained by Phibonacci Creativo",
+  "version": "3.4.2-phibonacci.0",
   "keywords": [
     "css",
     "less",
@@ -9,10 +9,13 @@
     "responsive",
     "front-end",
     "framework",
-    "web"
+    "web",
+    "bootstrap",
+    "bootstrap3",
+    "phibonacci"
   ],
-  "homepage": "https://getbootstrap.com/",
-  "author": "Twitter, Inc.",
+  "homepage": "https://www.phibonacci-creativo.com/",
+  "author": "Twitter, Inc. (original), maintained by Phibonacci Creativo",
   "scripts": {
     "sri": "node grunt/generate-sri.js",
     "release": "grunt prep-release && npm run sri && npm run release-zip",
@@ -25,10 +28,10 @@
   "main": "./dist/js/npm",
   "repository": {
     "type": "git",
-    "url": "https://github.com/twbs/bootstrap.git"
+    "url": "https://github.com/phibonaccicreativo/bootstrap-phibonacci.git"
   },
   "bugs": {
-    "url": "https://github.com/twbs/bootstrap/issues"
+    "url": "https://github.com/phibonaccicreativo/bootstrap-phibonacci/issues"
   },
   "license": "MIT",
   "dependencies": {},
