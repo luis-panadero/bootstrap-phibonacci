@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    container_name: bootstrap-phibonacci
+    volumes:
+      - .:/app               # mount local source code into container
+    working_dir: /app        # default working directory
+    tty: true                # keep container open for interactive use
+    ports:
+      - "4000:4000"          # Jekyll site (http://localhost:4000)
+      - "9876:9876"          # Karma test runner
+      - "9001:9001"          # Grunt docs preview (http://localhost:9001)
